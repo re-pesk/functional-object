@@ -23,3 +23,39 @@ console.log('container instanceof FunctionalObject: ', container instanceof Func
 console.log('container instanceof Function: ', container instanceof Function);
 
 console.log('container.content: ', container.content);
+
+class ContainerClassProxy extends FunctionalObject {
+  #handler = {
+    apply(targetInstance, thisArg, instanceCallingArgs) {
+      return targetInstance(...instanceCallingArgs);
+    }
+  }
+  
+  constructor(...instanceArgs) {
+    super((...callArgs) => { this.callArgs = callArgs; return this; }); // arrow function, no prototype object created
+    this.instanceArgs = instanceArgs;
+    return new Proxy(this, this.#handler);
+  }
+  
+  get content() {
+    return { instanceArgs: this.instanceArgs, callArgs: this.callArgs };
+  }
+}
+
+const Container2 = makeClassProxy(ContainerClassProxy, {
+  apply(targetClass, thisArg, instanceCreationArgs) {
+    return new targetClass(...instanceCreationArgs);
+  }
+});
+
+const container2 = Container2('a', 'b');
+console.log('container2: ', container2);
+
+console.log(`container2('c', 'd').content: `, container2('c', 'd').content);
+console.log(`container2: `, container2);
+console.log('container2 instanceof Container2: ', container2 instanceof Container2);
+console.log('container2 instanceof ContainerClassProxy: ', container2 instanceof ContainerClassProxy);
+console.log('container2 instanceof FunctionalObject: ', container2 instanceof FunctionalObject);
+console.log('container2 instanceof Function: ', container2 instanceof Function);
+
+console.log('container2.content: ', container2.content);
