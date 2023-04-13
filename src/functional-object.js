@@ -16,9 +16,12 @@ export class FunctionalObject extends ExtensibleFunction {
   }
 }
 
-export const makeClassProxy = (classArg, instanceHandler, classHandler = {
-  apply(target, thisArg, argumentsList) {
-    return new Proxy(new target(...argumentsList), instanceHandler);
+export const makeClassProxy = (classArg, classHandler = {
+  apply(targetClass, thisArg, instanceCreationArgs) {
+    return new Proxy(new targetClass(...instanceCreationArgs), {
+      apply(targetInstance, thisArg, instanceCallingArgs) {
+        return targetInstance(...instanceCallingArgs);
+      }
+    });
   }
 }) => new Proxy(classArg, classHandler);
-

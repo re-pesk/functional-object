@@ -10,11 +10,7 @@ class ContainerClass extends FunctionalObject {
   }
 }
 
-const Container = makeClassProxy(ContainerClass, {
-  apply(target, thisArg, argumentsList) {
-    return target(...argumentsList);
-  }
-});
+const Container = makeClassProxy(ContainerClass);
 
 const container = Container('a', 'b');
 console.log('container: ', container);
