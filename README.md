@@ -1,1 +1,1 @@
-# functional-object
+# Functional object
