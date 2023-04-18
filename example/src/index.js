@@ -17,7 +17,7 @@ const Container = makeClassProxy(ContainerClass);
 const container = Container('a', 'b');
 console.log('container: ', container);
 
-console.log('container(\'c\', \'d\').content: ', container('c', 'd').content);
+console.log('container("c", "d").content: ', container('c', 'd').content);
 console.log('container: ', container);
 console.log('container instanceof Container: ', container instanceof Container);
 console.log('container instanceof ContainerClass: ', container instanceof ContainerClass);
